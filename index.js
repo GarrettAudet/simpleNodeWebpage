@@ -20,11 +20,33 @@ const server = http.createServer((request, response) => {
     // Combine the directory of the current script and the file name 
     let filePath = path.join(__dirname, baseFileName);
 
+    // A Script for the File System to Handle Errors and Content Requests (Callback Function)
     fs.readFile(filePath, (err, content) =>  {
+
+        // Send a 404 Error if There was an Error During the File Read
         if (err) {
 
-        } else {
+            // Join the Directed File Path for the 404 HTML File, Read that File, Callback Function for Reading the File
+            fs.readFile(path.join(__dirname, '404.html'), (err, content) => {
 
+                // File Not Found
+                if (err) {
+                    // Handle the case where the 404.html file could not be read
+                    response.writeHead(500, {'Content-Type': 'text/html'});
+                    response.end('<h1>500 Internal Server Error</h1><p>The error page could not be displayed.</p>', 'utf-8');
+
+                // File Found
+                } else {
+                    // If the file is found and read successfully, send it as the response
+                    response.writeHead(404, {'Content-Type': 'text/html'});
+                    response.end(content, 'utf-8');
+                }
+            });
+        
+        // Send the Requested File with a 200 Status Code
+        } else {
+            response.writeHead(200, {'Content-Type': 'text/html'});
+            response.end(content, 'utf-8');
         }
     });
 
