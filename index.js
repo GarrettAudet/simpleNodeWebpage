@@ -1,5 +1,7 @@
-// Imports the Express Module 
+// Imports the Express, A Way to Interact with the Server File System, and Utilities for working with File/Directory Path Modules 
 const express = require("express");
+const fs = require('fs');
+const path = require('path');
 
 // Creates a Server with Express
 const app = express();
@@ -8,31 +10,15 @@ const app = express();
 const port = 3000; 
 
 // Responds to Get Requests 
-app.get("/", (req, res) => {
-    res.send("Hello World!");
-  });
-  
-  app.listen(port, () => {
-    console.log(`Example app listening on port ${port}!`);
-  });
-
-// Used to create an HTTP Server
-const http = require('http');
-
-// Provides a way to interact with the server's file system
-const fs = require('fs');
-
-// Provided utilities for working with file and directory paths
-const path = require('path');
-
-const server = http.createServer((request, response) => {
-
+app.get("/", (request, response) => {
     // Determine the Base File on the URL Path
     let baseFileName;
     if (request.url === '/') {
         baseFileName = 'index.html';
+
+    // Appends HTML if Needed
     } else {
-        baseFileName = request.url + '.html'
+        baseFileName = request.path.endsWith('.html') ? request.path.slice(1) : request.path.slice(1) + '.html';
     }
     
     // Combine the directory of the current script and the file name 
@@ -67,8 +53,9 @@ const server = http.createServer((request, response) => {
             response.end(content, 'utf-8');
         }
     });
-
-// Tells the Server to Listen at Port 8080 for Requests
-}).listen(8080, () => {
-    console.log('Server running at http://localhost:8080/');
 });
+  
+app.listen(port, () => {
+    console.log('Server running at http://localhost:${port}');
+});
+
