@@ -18,7 +18,7 @@ app.get("/", (request, response) => {
 
     // Appends HTML if Needed
     } else {
-        baseFileName = request.path.endsWith('.html') ? request.path.slice(1) : request.path.slice(1) + '.html';
+        baseFileName = request.url + '.html'
     }
     
     // Combine the directory of the current script and the file name 
@@ -56,6 +56,6 @@ app.get("/", (request, response) => {
 });
   
 app.listen(port, () => {
-    console.log('Server running at http://localhost:${port}');
+    console.log(`Server running at http://localhost:${port}`);
 });
 
