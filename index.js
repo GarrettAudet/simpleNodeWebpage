@@ -1,3 +1,21 @@
+// Imports the Express Module 
+const express = require("express");
+
+// Creates a Server with Express
+const app = express();
+
+// Listens for HTTP Requests on Port 3000
+const port = 3000; 
+
+// Responds to Get Requests 
+app.get("/", (req, res) => {
+    res.send("Hello World!");
+  });
+  
+  app.listen(port, () => {
+    console.log(`Example app listening on port ${port}!`);
+  });
+
 // Used to create an HTTP Server
 const http = require('http');
 
